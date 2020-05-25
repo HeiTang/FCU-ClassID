@@ -4,6 +4,7 @@
 import requests,os,sys
 import json
 from bs4 import BeautifulSoup
+import pandas as pd
 
 def GetDeptList(Dept_data,degree):
     payload = {
@@ -102,6 +103,7 @@ def Show(dict):
     list = dict.keys()
     for i in list:
         print(dict[i] + ":" + i)
+    
 
 if __name__ == '__main__': 
 
@@ -110,7 +112,10 @@ if __name__ == '__main__':
     for degree in 1,3,4,5:
         GetDeptList(Dept_data,degree)
     print("\n## 學院列表：（" + str(len(Dept_data)) + " 筆資料）")
-    Show(Dept_data)
+    # Show(Dept_data)
+    dataframe = pd.Series(Dept_data, index = Dept_data.keys()) 
+    dataframe.to_csv("Dept_data.csv")
+
 
     # 所有系所
     Unit_data = {}
@@ -118,7 +123,9 @@ if __name__ == '__main__':
         for deptId in Dept_data.values():
             GetUnitList(Unit_data,degree,deptId)
     print("\n## 系所列表：（" + str(len(Unit_data)) + " 筆資料）")
-    Show(Unit_data)
+    # Show(Unit_data)
+    dataframe = pd.Series(Unit_data, index = Unit_data.keys()) 
+    dataframe.to_csv("Unit_data.csv")
 
     # 所有班級
     Class_data = {}
@@ -126,4 +133,6 @@ if __name__ == '__main__':
         for unitId in Unit_data.values():
             GetClassList(Class_data,degree,unitId)
     print("\n## 班級列表：（" + str(len(Class_data)) + " 筆資料）")
-    Show(Class_data)
+    # Show(Class_data)
+    dataframe = pd.Series(Class_data, index = Class_data.keys()) 
+    dataframe.to_csv("Class_data.csv")
